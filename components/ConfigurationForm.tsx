@@ -156,12 +156,12 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onGenerate, isGen
           {isGenerating ? (
             <>
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              Generating Python Script...
+              Generating ...
             </>
           ) : (
             <>
               <Sparkles className="w-5 h-5" />
-              Generate Scraper Tool
+              Generate
             </>
           )}
         </button>
