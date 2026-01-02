@@ -1,0 +1,5 @@
+{
+  "name": "CSR Opportunity Finder",
+  "description": "A React application that uses Gemini with Google Search to find active CSR opportunities and exports them to Excel.",
+  "requestFramePermissions": []
+}
