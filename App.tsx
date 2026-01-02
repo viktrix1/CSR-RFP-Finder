@@ -23,7 +23,7 @@ const App: React.FC = () => {
       setStatus(AppStatus.COMPLETE);
     } catch (err: any) {
       console.error(err);
-      setError("Failed to fetch opportunities. Please try again later.");
+      setError(err.message || "Failed to fetch opportunities. Please check your API Key and try again.");
       setStatus(AppStatus.ERROR);
     }
   };
@@ -86,7 +86,7 @@ const App: React.FC = () => {
              <div className="flex-1 bg-red-50 rounded-xl shadow-sm border border-red-100 flex flex-col items-center justify-center text-center p-12">
              <AlertCircle className="w-12 h-12 text-red-500 mb-4" />
              <h3 className="text-lg font-bold text-red-800 mb-2">Search Failed</h3>
-             <p className="text-red-600 mb-6">{error}</p>
+             <p className="text-red-600 mb-6 max-w-lg mx-auto">{error}</p>
              <button 
                onClick={() => setStatus(AppStatus.IDLE)}
                className="px-6 py-2 bg-white text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition-colors font-medium"

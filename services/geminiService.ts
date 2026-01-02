@@ -33,10 +33,12 @@ const createPrompt = (config: ScraperConfig): string => {
 
 export const generateScraperScript = async (config: ScraperConfig): Promise<SearchResult> => {
   try {
-    const apiKey = process.env.API_KEY;
-    if (!apiKey) throw new Error("API Key not found");
+    // Ensure the key exists before attempting to use it
+    if (!process.env.API_KEY) {
+      throw new Error("API Key is missing. Please set the 'API_KEY' environment variable in your Vercel project settings and redeploy.");
+    }
 
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
@@ -81,8 +83,9 @@ export const generateScraperScript = async (config: ScraperConfig): Promise<Sear
       sources
     };
 
-  } catch (error) {
+  } catch (error: any) {
     console.error("Gemini API Error:", error);
-    throw error;
+    // Pass the actual error message back to the UI
+    throw new Error(error.message || "An unknown error occurred with the Gemini API");
   }
 };
