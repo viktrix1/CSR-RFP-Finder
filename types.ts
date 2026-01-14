@@ -2,6 +2,7 @@ export interface ScraperConfig {
   sectors: string[];
   geography: string[];
   deadline: string;
+  specificOrganization: string;
   outputFormat: 'xlsx' | 'csv' | 'json';
 }
 

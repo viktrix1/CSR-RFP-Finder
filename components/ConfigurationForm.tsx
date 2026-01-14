@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ScraperConfig } from '../types';
-import { Layers, MapPin, Calendar, Code, CheckCircle2, Sparkles } from 'lucide-react';
+import { Layers, MapPin, Calendar, Code, CheckCircle2, Sparkles, Building, Share2 } from 'lucide-react';
 
 interface ConfigurationFormProps {
   onGenerate: (config: ScraperConfig) => void;
@@ -30,7 +30,8 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onGenerate, isGen
   const [config, setConfig] = useState<ScraperConfig>({
     sectors: ["Livelihood", "Women Empowerment", "Education", "Health", "Climate-resilient Agriculture", "Agriculture"],
     geography: ["Pan-India", "Uttarakhand", "Himachal Pradesh"],
-    deadline: "2026-01-31",
+    deadline: "2026-12-31",
+    specificOrganization: "",
     outputFormat: 'xlsx'
   });
 
@@ -62,14 +63,32 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onGenerate, isGen
       <div className="p-6 border-b border-gray-100 bg-gray-50/50">
         <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
           <Code className="w-5 h-5 text-blue-600" />
-          Configure Scraper
+          Opportunity Bot
         </h2>
         <p className="text-sm text-gray-500 mt-1">
-          Define parameters for your Python scraping bot.
+          Scraping portals & LinkedIn for up to 100 matches.
         </p>
       </div>
 
       <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
+        
+        {/* Specific Organization */}
+        <section>
+          <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <Building className="w-4 h-4" /> Specific Organization
+          </h3>
+          <div className="flex flex-col gap-2">
+            <input
+              type="text"
+              placeholder="e.g. Tata Trusts, HCL Foundation"
+              value={config.specificOrganization}
+              onChange={(e) => setConfig(prev => ({ ...prev, specificOrganization: e.target.value }))}
+              className="px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-blue-500 bg-white text-black font-medium outline-none w-full shadow-sm transition-colors"
+            />
+            <p className="text-xs text-gray-500">Focuses the bot on specific foundation announcements.</p>
+          </div>
+        </section>
+
         {/* Sectors */}
         <section>
           <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4 flex items-center gap-2">
@@ -94,7 +113,7 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onGenerate, isGen
                 ) : (
                   <div className="w-5 h-5 rounded-full border-2 border-gray-300 flex-shrink-0" />
                 )}
-                <span className="font-medium">{sector}</span>
+                <span className="font-medium text-xs sm:text-sm">{sector}</span>
               </label>
             ))}
           </div>
@@ -112,7 +131,7 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onGenerate, isGen
                 type="button"
                 onClick={() => toggleRegion(region)}
                 className={`
-                  px-4 py-2 rounded-full text-sm font-medium transition-colors border
+                  px-4 py-2 rounded-full text-xs font-medium transition-colors border
                   ${config.geography.includes(region)
                     ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
                     : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'}
@@ -129,14 +148,17 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onGenerate, isGen
           <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4 flex items-center gap-2">
             <Calendar className="w-4 h-4" /> Deadline Limit
           </h3>
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          <div className="flex flex-col gap-4">
             <input
               type="date"
               value={config.deadline}
               onChange={(e) => setConfig(prev => ({ ...prev, deadline: e.target.value }))}
-              className="px-4 py-2 rounded-lg border-2 border-blue-500 bg-white text-black font-medium focus:ring-2 focus:ring-blue-500 outline-none w-full sm:w-auto shadow-sm"
+              className="px-4 py-2 rounded-lg border-2 border-blue-500 bg-white text-black font-medium focus:ring-2 focus:ring-blue-500 outline-none w-full shadow-sm"
             />
-            <span className="text-sm text-gray-500">Only fetch opportunities closing before this date.</span>
+            <div className="flex items-start gap-2 text-xs text-gray-500">
+              <Share2 className="w-3 h-3 mt-0.5 text-blue-500" />
+              <span>Includes scraping of real-time LinkedIn posts and CSR portals.</span>
+            </div>
           </div>
         </section>
       </div>
@@ -156,12 +178,12 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onGenerate, isGen
           {isGenerating ? (
             <>
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              Generating ...
+              Scanning LinkedIn & Portals...
             </>
           ) : (
             <>
               <Sparkles className="w-5 h-5" />
-              Generate
+              Find 100+ Opportunities
             </>
           )}
         </button>
